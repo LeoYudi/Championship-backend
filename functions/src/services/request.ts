@@ -23,14 +23,14 @@ const listRequestsService = async () => {
       from: 'players',
       localField: 'id_player',
       foreignField: '_id',
-      as: 'player'
-    }
+      as: 'player',
+    },
   }, {
     $set: {
-      player: { $arrayElemAt: ['$player.name', 0] }
-    }
+      player: { $arrayElemAt: ['$player.name', 0] },
+    },
   }, {
-    $sort: { created_at: 1 }
+    $sort: { created_at: 1 },
   }]);
 
   return requests;
