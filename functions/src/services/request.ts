@@ -18,7 +18,20 @@ const removeRequestService = async (id: string) => {
 };
 
 const listRequestsService = async () => {
-  const requests = await RequestModel.find({}, null, { sort: { created_at: 1 } });
+  const requests = await RequestModel.aggregate([{
+    $lookup: {
+      from: 'players',
+      localField: 'id_player',
+      foreignField: '_id',
+      as: 'player'
+    }
+  }, {
+    $set: {
+      player: { $arrayElemAt: ['$player.name', 0] }
+    }
+  }, {
+    $sort: { created_at: 1 }
+  }]);
 
   return requests;
 };
